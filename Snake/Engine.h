@@ -1,5 +1,6 @@
 #pragma once
 #include "Vec2.h"
+#include "Dot.h"
 
 class Engine
 {
@@ -11,6 +12,7 @@ public:
 
 	Vec2 getInput();
 	void renderFrame();
+	bool collisionCheck(Dot objA, Dot objB);
 
 };
 

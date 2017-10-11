@@ -7,7 +7,7 @@
 class Snake
 {
 private:
-	void findBlockedDirection();
+	Vec2 findBlockedDirection();
 	void update();
 
 public:
@@ -22,6 +22,7 @@ public:
 	~Snake();
 
 	void move(Vec2 direction);
+	bool changeDirection(Vec2 newDirection);
 };
 
 Snake::Snake(Vec2 position, Vec2 direction, int numberOfSegments)
@@ -37,7 +38,7 @@ Snake::Snake(Vec2 position, Vec2 direction, int numberOfSegments)
 	neckPosition = body.at(1).pos;
 }
 
-void Snake::findBlockedDirection()
+Vec2 Snake::findBlockedDirection()
 {
 	Vec2 result;
 
@@ -53,6 +54,7 @@ void Snake::findBlockedDirection()
 	}
 
 	blockedDirection = result;
+	return result;
 }
 
 void Snake::update()
@@ -71,3 +73,15 @@ void Snake::move(Vec2 direction)
 
 	update();
 }
+
+bool Snake::changeDirection(Vec2 newDirection)
+{
+	if (newDirection == findBlockedDirection())
+		return false;
+	else
+	{
+		headDirection = newDirection;
+		return true;
+	}
+}
+
