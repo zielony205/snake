@@ -9,6 +9,7 @@ public:
 	Vec2 pos;
 	type dType;
 
+	Dot();
 	Dot(Vec2 position, type dotType);
 	~Dot();
 };

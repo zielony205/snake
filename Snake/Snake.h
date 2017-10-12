@@ -7,6 +7,8 @@
 class Snake
 {
 private:
+	bool growNextFrame;
+
 	Vec2 findBlockedDirection();
 	void update();
 
@@ -18,11 +20,13 @@ public:
 
 	std::vector<Dot> body;
 
+	Snake();
 	Snake(Vec2 position, Vec2 direction, int numberOfSegments);
 	~Snake();
 
 	void move(Vec2 direction);
 	bool changeDirection(Vec2 newDirection);
+	void grow();
 };
 
 Snake::Snake(Vec2 position, Vec2 direction, int numberOfSegments)
@@ -36,6 +40,8 @@ Snake::Snake(Vec2 position, Vec2 direction, int numberOfSegments)
 	}
 
 	neckPosition = body.at(1).pos;
+
+	growNextFrame = false;
 }
 
 Vec2 Snake::findBlockedDirection()
@@ -68,7 +74,12 @@ void Snake::update()
 void Snake::move(Vec2 direction)
 {
 	headDirection = direction;
-	body.pop_back();
+
+	if (!growNextFrame)
+		body.pop_back();
+	else
+		growNextFrame = false;
+
 	body.insert(body.begin(), Dot(Vec2(headPosition + headDirection), PLAYER));
 
 	update();
@@ -83,5 +94,10 @@ bool Snake::changeDirection(Vec2 newDirection)
 		headDirection = newDirection;
 		return true;
 	}
+}
+
+void Snake::grow()
+{
+	growNextFrame = true;
 }
 
