@@ -24,7 +24,7 @@ public:
 	Snake(Vec2 position, Vec2 direction, int numberOfSegments);
 	~Snake();
 
-	void move(Vec2 direction);
+	void move();
 	bool changeDirection(Vec2 newDirection);
 	void grow();
 };
@@ -71,10 +71,8 @@ void Snake::update()
 	findBlockedDirection();
 }
 
-void Snake::move(Vec2 direction)
+void Snake::move()
 {
-	headDirection = direction;
-
 	if (!growNextFrame)
 		body.pop_back();
 	else

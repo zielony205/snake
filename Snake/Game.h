@@ -10,12 +10,11 @@ class Game
 {
 private:
 
-	
-public:
-	
 	typedef enum { RUNNING, STOPPED_PAUSE, STOPPED_DEAD } state;
 	state gameState;
-
+		
+public:
+	
 	int mapX;
 	int mapY;
 
@@ -25,7 +24,8 @@ public:
 	Snake player;
 	Dot food;
 
-	Game(Vec2 snakePos, Vec2 snakeDir);
+	Game();
+	Game(Vec2 snakePos, Vec2 snakeDir, int mX, int mY);
 	
 	void spawnFood();
 	void spawnSnake(Vec2 pos, Vec2 dir);
@@ -33,22 +33,27 @@ public:
 	void checkCollisions();
 	bool oobCheck();
 
-	void update();
-
 	void handleInput(Vec2 input);
 	int randomize(int maxNum);
+
+	void update(Vec2 input);
+
+	std::vector<Dot> dotsToRender();
 
 };
 
 
 
-Game::Game(Vec2 snakePos, Vec2 snakeDir)
+Game::Game(Vec2 snakePos, Vec2 snakeDir, int mX, int mY)
 {
 	srand(time(NULL));
 	initialSnakeLength = 3;
 	gameState = RUNNING;
 	spawnSnake(snakePos, snakeDir);
 	spawnFood();
+	score = 0;
+	mapX = mX;
+	mapY = mY;
 }
 
 void Game::spawnFood()
@@ -72,7 +77,7 @@ void Game::checkCollisions()
 		}
 	}
 
-	if (oobCheck())
+	if (oobCheck())										//Player crashed into wall
 	{
 		gameState = STOPPED_DEAD;
 		return;
@@ -82,9 +87,9 @@ void Game::checkCollisions()
 	{
 		player.grow();
 		spawnFood();
+		score += 1;
 	}
 }
-
 
 bool Game::oobCheck()
 {
@@ -97,7 +102,6 @@ bool Game::oobCheck()
 	}
 	return false;
 }
-
 
 void Game::handleInput(Vec2 input)
 {
@@ -116,3 +120,28 @@ int Game::randomize(int maxNum)
 	return rand() % maxNum + 1;
 }
 
+void Game::update(Vec2 input)						//TODO: Paused and dead gameState
+{
+	if (gameState == RUNNING)
+	{
+		checkCollisions();
+		oobCheck();
+		handleInput(input);
+		player.move();
+	}
+	else
+	{
+
+	}
+}
+
+std::vector<Dot> Game::dotsToRender()
+{
+	std::vector<Dot> result;
+	result.push_back(food);
+	for (int i = 0; i < player.body.size; ++i)
+	{
+		result.push_back(player.body.at(i));
+	}
+	return result;
+}
