@@ -68,7 +68,7 @@ void Game::spawnSnake(Vec2 pos, Vec2 dir)
 
 void Game::checkCollisions()
 {
-	for (int i = 1; i < player.body.size; ++i)			//Player crashed into his tail
+	for (unsigned int i = 1; i < player.body.size(); ++i)			//Player crashed into his tail
 	{
 		if (player.headPosition == player.body.at(i).pos)
 		{
@@ -139,7 +139,7 @@ std::vector<Dot> Game::dotsToRender()
 {
 	std::vector<Dot> result;
 	result.push_back(food);
-	for (int i = 0; i < player.body.size; ++i)
+	for (unsigned int i = 0; i < player.body.size(); ++i)
 	{
 		result.push_back(player.body.at(i));
 	}
