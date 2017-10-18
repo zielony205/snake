@@ -17,7 +17,6 @@ public:
 	Vec2 headDirection;
 	Vec2 neckPosition;
 	Vec2 blockedDirection;
-
 	std::vector<Dot> body;
 
 	Snake();

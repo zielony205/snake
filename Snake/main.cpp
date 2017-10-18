@@ -10,10 +10,7 @@ int main()
 
 	while (!eng.quit)
 	{
-		eng.getInput();
-		eng.clearScreen();
-		eng.drawTile(Vec2(5,5));
-		eng.renderFrame();
+		eng.mainLoop();
 	}
 	return 0;
 }

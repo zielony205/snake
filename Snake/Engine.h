@@ -14,23 +14,24 @@ private:
 	SDL_Window *window;
 	SDL_Renderer *renderer;
 
+	Vec2 getInput();
+	void clearScreen();
+	Vec2 calculateTilePosition(Vec2 pos);
+	void drawTile(Vec2 pos);
+	void preRenderUpdate();
+	void renderFrame();
 
 public:
 
 	int mapsizeX, mapsizeY, s_width, s_height;
-
 	Game gameManager;
 	bool quit;
 
 	Engine();
 	~Engine();
 
-	Vec2 getInput();
 	int init();
-	void clearScreen();
-	void renderFrame();
-	Vec2 calculateTilePosition(Vec2 pos);
-	void drawTile(Vec2 pos);
+	void mainLoop();
 
 };
 
@@ -92,11 +93,20 @@ Vec2 Engine::getInput()							///////////////TODO
 		}
 		else if (e.type == SDL_KEYDOWN)
 		{
-			if (e.key.type == SDLK_UP)
+			switch (e.key.type)
+			{
+			case SDLK_UP:
 				return Vec2(0, 1);
+			case SDLK_DOWN:
+				return Vec2(0, -1);
+			case SDLK_LEFT:
+				return Vec2(-1, 0);
+			case SDLK_RIGHT:
+				return Vec2(1, 0);
+			}
 		}
 	}
-	return Vec2();
+	return Vec2(0, 0);
 }
 
 
@@ -115,15 +125,32 @@ void Engine::drawTile(Vec2 pos)
 {
 	Vec2 position = calculateTilePosition(pos);
 
-	SDL_Rect fillRectBG = { position.x, position.y, 20, 20};
+	SDL_Rect fillRectBG = { position.x + 1, position.y + 1, 18, 18};
 	SDL_SetRenderDrawColor(renderer, 0xBF, 0xC1, 0x24, 0xFF);
 	SDL_RenderFillRect(renderer, &fillRectBG);
-	SDL_Rect fillRect = { position.x + 2, position.y + 2, 16, 16};
+	SDL_Rect fillRect = { position.x + 3, position.y + 3, 14, 14};
 	SDL_SetRenderDrawColor(renderer, 0x2D, 0x77, 0x21, 0xFF);
 	SDL_RenderFillRect(renderer, &fillRect);
+}
+
+void Engine::preRenderUpdate()
+{
+	std::vector<Dot> tiles = gameManager.dotsToRender();
+	for (unsigned int i = 0; i < tiles.size(); ++i)
+	{
+		drawTile(tiles.at(i).pos);
+	}
 }
 
 void Engine::renderFrame()
 {
 	SDL_RenderPresent(renderer);
+}
+
+void Engine::mainLoop()
+{
+	getInput();
+	clearScreen();
+	preRenderUpdate();
+	renderFrame();
 }

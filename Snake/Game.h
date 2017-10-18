@@ -15,12 +15,9 @@ private:
 		
 public:
 	
-	int mapX;
-	int mapY;
-
+	int mapX, mapY;
 	int initialSnakeLength;
 	int score;
-
 	Snake player;
 	Dot food;
 
@@ -29,15 +26,11 @@ public:
 	
 	void spawnFood();
 	void spawnSnake(Vec2 pos, Vec2 dir);
-
 	void checkCollisions();
 	bool oobCheck();
-
 	void handleInput(Vec2 input);
 	int randomize(int maxNum);
-
 	void update(Vec2 input);
-
 	std::vector<Dot> dotsToRender();
 
 };
