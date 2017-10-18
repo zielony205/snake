@@ -39,10 +39,10 @@ Snake::Snake(Vec2 position, Vec2 direction, int numberOfSegments)
 
 	for (int i = 0; i < numberOfSegments; ++i)
 	{
-		body.push_back(Dot(Vec2(position.x + (direction.x * i), position.y + (direction.y * i)), PLAYER));
+		body.push_back(Dot(Vec2(position.x + (direction.x * i), position.y - (direction.y * i)), PLAYER));
 	}
 
-	neckPosition = body.at(1).pos;
+	update();
 
 	growNextFrame = false;
 }

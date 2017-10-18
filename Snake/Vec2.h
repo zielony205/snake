@@ -64,12 +64,10 @@ void Vec2::translate(int x, int y)
 
 Vec2 Vec2::operator+(Vec2 vec)
 {
-	Vec2 result;
+	vec.x += this->x;
+	vec.y += this->y;
 
-	result.x += vec.x;
-	result.y += vec.y;
-
-	return result;
+	return vec;
 }
 
 bool Vec2::operator==(Vec2 vec)

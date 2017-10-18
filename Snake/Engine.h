@@ -14,6 +14,11 @@ private:
 	SDL_Window *window;
 	SDL_Renderer *renderer;
 
+	Uint64 time_now;
+	Uint64 time_last;
+	double deltaTime;
+
+	void calculateDeltaTime();
 	Vec2 getInput();
 	void clearScreen();
 	Vec2 calculateTilePosition(Vec2 pos);
@@ -61,7 +66,7 @@ int Engine::init()
 		return 1;
 	}
 
-	window = SDL_CreateWindow("Hello World!", 100, 100, 600, 600, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("Snake!", 100, 100, 600, 600, SDL_WINDOW_SHOWN);
 
 	if (window == nullptr)
 	{
@@ -78,7 +83,23 @@ int Engine::init()
 		SDL_Quit();
 		return 1;
 	}
+
+	time_now = SDL_GetPerformanceCounter();
+	time_last = 0;
+	deltaTime = 0;
+
 	return 0;
+}
+
+
+void Engine::calculateDeltaTime()
+{
+	time_last = time_now;
+	time_now = SDL_GetPerformanceCounter();
+
+	deltaTime = (double)((time_now - time_last) * 1000 / SDL_GetPerformanceFrequency());
+
+	//std::cout << deltaTime << std::endl;
 }
 
 
@@ -93,7 +114,7 @@ Vec2 Engine::getInput()							///////////////TODO
 		}
 		else if (e.type == SDL_KEYDOWN)
 		{
-			switch (e.key.type)
+			switch (e.key.keysym.sym)
 			{
 			case SDLK_UP:
 				return Vec2(0, 1);
@@ -135,6 +156,7 @@ void Engine::drawTile(Vec2 pos)
 
 void Engine::preRenderUpdate()
 {
+	clearScreen();
 	std::vector<Dot> tiles = gameManager.dotsToRender();
 	for (unsigned int i = 0; i < tiles.size(); ++i)
 	{
@@ -149,8 +171,10 @@ void Engine::renderFrame()
 
 void Engine::mainLoop()
 {
-	getInput();
-	clearScreen();
-	preRenderUpdate();
-	renderFrame();
+	calculateDeltaTime();
+	if (gameManager.update(getInput(), deltaTime))
+	{
+		preRenderUpdate();
+		renderFrame();
+	}
 }

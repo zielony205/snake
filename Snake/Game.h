@@ -5,6 +5,7 @@
 #include "Snake.h"
 #include <stdlib.h>
 #include <time.h>
+#include <iostream>
 
 class Game
 {
@@ -12,6 +13,7 @@ private:
 
 	typedef enum { RUNNING, STOPPED_PAUSE, STOPPED_DEAD } state;
 	state gameState;
+	int playerSpeed, sCounter;
 		
 public:
 	
@@ -30,7 +32,7 @@ public:
 	bool oobCheck();
 	void handleInput(Vec2 input);
 	int randomize(int maxNum);
-	void update(Vec2 input);
+	bool update(Vec2 input, double dTime);
 	std::vector<Dot> dotsToRender();
 
 };
@@ -43,13 +45,15 @@ Game::Game()
 Game::Game(Vec2 snakePos, Vec2 snakeDir, int mX, int mY)
 {
 	srand(time(NULL));
-	initialSnakeLength = 3;
+	initialSnakeLength = 6;
 	gameState = RUNNING;
 	spawnSnake(snakePos, snakeDir);
 	spawnFood();
 	score = 0;
 	mapX = mX;
 	mapY = mY;
+	playerSpeed = 100;
+	sCounter = 0;
 }
 
 void Game::spawnFood()
@@ -101,6 +105,8 @@ bool Game::oobCheck()
 
 void Game::handleInput(Vec2 input)
 {
+	if (input == Vec2(0, 0))
+		return;
 	if (input == Vec2(0, 1))
 		player.changeDirection(input);
 	else if (input == Vec2(0, -1))
@@ -111,23 +117,30 @@ void Game::handleInput(Vec2 input)
 		player.changeDirection(input);
 }
 
-int Game::randomize(int maxNum)
+int Game::randomize(int maxNum)									//Hardcoded maxNum
 {
-	return rand() % maxNum + 1;
+	return (rand() % 29) + 1;
 }
 
-void Game::update(Vec2 input)						//TODO: Paused and dead gameState
+bool Game::update(Vec2 input, double dTime)						//TODO: Paused and dead gameState
 {
 	if (gameState == RUNNING)
 	{
-		checkCollisions();
-		oobCheck();
 		handleInput(input);
-		player.move();
+
+		sCounter += dTime / 2;
+
+		if (sCounter >= playerSpeed)
+		{
+			sCounter = 0.0f;
+			player.move();
+		}
+		checkCollisions();
+		return true;
 	}
 	else
 	{
-
+		return false;
 	}
 }
 
