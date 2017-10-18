@@ -12,7 +12,8 @@ int main()
 	{
 		eng.getInput();
 		eng.clearScreen();
-		eng.drawTile(Vec2());
+		eng.drawTile(Vec2(5,5));
+		eng.renderFrame();
 	}
 	return 0;
 }

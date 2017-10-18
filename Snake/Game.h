@@ -42,7 +42,10 @@ public:
 
 };
 
+Game::Game()
+{
 
+}
 
 Game::Game(Vec2 snakePos, Vec2 snakeDir, int mX, int mY)
 {

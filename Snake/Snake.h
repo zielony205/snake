@@ -22,12 +22,16 @@ public:
 
 	Snake();
 	Snake(Vec2 position, Vec2 direction, int numberOfSegments);
-	~Snake();
 
 	void move();
 	bool changeDirection(Vec2 newDirection);
 	void grow();
 };
+
+Snake::Snake()
+{
+
+}
 
 Snake::Snake(Vec2 position, Vec2 direction, int numberOfSegments)
 {
