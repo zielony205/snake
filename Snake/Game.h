@@ -41,10 +41,9 @@ public:
 
 Game::Game()
 {
-
 }
 
-Game::Game(Vec2 snakePos, Vec2 snakeDir, int mX, int mY)
+Game::Game(Vec2 snakePos, Vec2 snakeDir, int mX, int mY)	//Constructor
 {
 	srand(time(NULL));
 	initialSnakeLength = 10;
@@ -57,7 +56,7 @@ Game::Game(Vec2 snakePos, Vec2 snakeDir, int mX, int mY)
 	init();
 }
 
-void Game::init()
+void Game::init()					//Set start values for game objects
 {
 	spawnSnake(sPos, sDir);
 	spawnFood();
@@ -66,17 +65,17 @@ void Game::init()
 	gameState = RUNNING;
 }
 
-void Game::spawnFood()
+void Game::spawnFood()					//Spawns food on random position on map
 {
 	food = Dot(Vec2(randomize(mapX), randomize(mapY)), FOOD);
 }
 
-void Game::spawnSnake(Vec2 pos, Vec2 dir)
+void Game::spawnSnake(Vec2 pos, Vec2 dir)				//Spawns snake on provided position and with provided direction
 {
 	player = Snake(pos, dir, initialSnakeLength);
 }
 
-void Game::checkCollisions()
+void Game::checkCollisions()					//Maintains checking and handling collisions
 {
 	Vec2 predictedHeadPos = player.headPosition + player.headDirection;
 
@@ -90,14 +89,14 @@ void Game::checkCollisions()
 		}
 	}
 
-	if (oobCheck())										//Player crashed into wall
+	if (oobCheck())					//Player crashed into wall
 	{
 		gameState = STOPPED_DEAD;
 		renderNextFrame = false;
 		return;
 	}
 
-	if (player.headPosition == food.pos)				//Player collecting food
+	if (player.headPosition == food.pos)			//Player collecting food
 	{
 		player.grow();
 		spawnFood();
@@ -108,7 +107,7 @@ void Game::checkCollisions()
 
 bool Game::oobCheck()
 {
-	Vec2 predictedHeadPos = player.headPosition;// +player.headDirection;
+	Vec2 predictedHeadPos = player.headPosition;//+player.headDirection;
 	if (predictedHeadPos.x < 1 ||
 		predictedHeadPos.x > 30 ||
 		predictedHeadPos.y < 1 ||
@@ -119,7 +118,7 @@ bool Game::oobCheck()
 	return false;
 }
 
-void Game::handleInput(std::string input)
+void Game::handleInput(std::string input)			//Handle input provided by Engine
 {
 	if (gameState == RUNNING)
 	{
@@ -139,15 +138,16 @@ void Game::handleInput(std::string input)
 	}
 }
 
-int Game::randomize(int maxNum)
+int Game::randomize(int maxNum)				//Returns random number from 1 to maxNum
 {
-	return (rand() % maxNum - 1) + 1;
+	return rand() % (maxNum - 1) + 1;
 }
 
-void Game::update(std::string input, double dTime)						//TODO: Paused and dead gameState
+void Game::update(std::string input, double dTime)				//Maintains input handling, game state management, player movement, etc.
 {
 	if (gameState == RUNNING)
 	{
+		std::cout << food.pos.x << ", " << food.pos.y << std::endl;
 		checkCollisions();
 		handleInput(input);
 
@@ -165,7 +165,7 @@ void Game::update(std::string input, double dTime)						//TODO: Paused and dead 
 	}
 }
 
-std::vector<Dot> Game::dotsToRender()
+std::vector<Dot> Game::dotsToRender()				//Returns vector of tiles for Engine to be rendered
 {
 	std::vector<Dot> result;
 	result.push_back(food);

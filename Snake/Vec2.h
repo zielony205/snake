@@ -22,12 +22,10 @@ public:
 
 Vec2::Vec2()
 {
-
 }
 
 Vec2::~Vec2()
 {
-
 }
 
 Vec2::Vec2(int x, int y)

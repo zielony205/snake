@@ -40,7 +40,7 @@ public:
 };
 
 
-Engine::Engine()
+Engine::Engine()					//Constructor
 {
 	mapsizeX = 30;
 	mapsizeY = 30;
@@ -52,7 +52,7 @@ Engine::Engine()
 	renderer = NULL;
 }
 
-int Engine::init()
+int Engine::init()					//SDL initialization
 {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 	{
@@ -138,7 +138,7 @@ Vec2 Engine::calculateTilePosition(Vec2 pos)	//Calculates position of tile in SD
 	return Vec2(20 * (pos.x - 1), s_height - 20 * pos.y);
 }
 
-void Engine::drawTile(Vec2 pos)
+void Engine::drawTile(Vec2 pos)					//Draw tile to renderer at provided position in game space
 {
 	Vec2 position = calculateTilePosition(pos);
 
@@ -150,7 +150,7 @@ void Engine::drawTile(Vec2 pos)
 	SDL_RenderFillRect(renderer, &fillRect);
 }
 
-void Engine::preRenderUpdate()
+void Engine::preRenderUpdate()					//Prepare objects to be drawn, and draw them to renderer
 {
 	clearScreen();
 	std::vector<Dot> tiles = gameManager.dotsToRender();
@@ -160,12 +160,12 @@ void Engine::preRenderUpdate()
 	}
 }
 
-void Engine::renderFrame()
+void Engine::renderFrame()						//Show rendered frame
 {
 	SDL_RenderPresent(renderer);
 }
 
-void Engine::mainLoop()
+void Engine::mainLoop()							//Main loop of the game engine
 {
 	calculateDeltaTime();
 	gameManager.update(getInput(), deltaTime);
