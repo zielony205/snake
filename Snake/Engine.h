@@ -19,7 +19,7 @@ private:
 	double deltaTime;
 
 	void calculateDeltaTime();
-	Vec2 getInput();
+	std::string getInput();
 	void clearScreen();
 	Vec2 calculateTilePosition(Vec2 pos);
 	void drawTile(Vec2 pos);
@@ -33,7 +33,6 @@ public:
 	bool quit;
 
 	Engine();
-	~Engine();
 
 	int init();
 	void mainLoop();
@@ -51,11 +50,6 @@ Engine::Engine()
 	quit = false;
 	window = NULL;
 	renderer = NULL;
-}
-
-Engine::~Engine()
-{
-
 }
 
 int Engine::init()
@@ -92,7 +86,7 @@ int Engine::init()
 }
 
 
-void Engine::calculateDeltaTime()
+void Engine::calculateDeltaTime()			//Calculates time between frames
 {
 	time_last = time_now;
 	time_now = SDL_GetPerformanceCounter();
@@ -103,7 +97,7 @@ void Engine::calculateDeltaTime()
 }
 
 
-Vec2 Engine::getInput()							///////////////TODO
+std::string Engine::getInput()				//Getting input from SDL and returns message
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e) != 0)
@@ -117,27 +111,29 @@ Vec2 Engine::getInput()							///////////////TODO
 			switch (e.key.keysym.sym)
 			{
 			case SDLK_UP:
-				return Vec2(0, 1);
+				return "up";
 			case SDLK_DOWN:
-				return Vec2(0, -1);
+				return "down";
 			case SDLK_LEFT:
-				return Vec2(-1, 0);
+				return "left";
 			case SDLK_RIGHT:
-				return Vec2(1, 0);
+				return "right";
+			case SDLK_RETURN:
+				return "enter";
 			}
 		}
 	}
-	return Vec2(0, 0);
+	return "";
 }
 
 
-void Engine::clearScreen()
+void Engine::clearScreen()					//Fills screen with black color before tiles are drawn
 {
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 	SDL_RenderClear(renderer);
 }
 
-Vec2 Engine::calculateTilePosition(Vec2 pos)
+Vec2 Engine::calculateTilePosition(Vec2 pos)	//Calculates position of tile in SDL renderer space
 {
 	return Vec2(20 * (pos.x - 1), s_height - 20 * pos.y);
 }
@@ -172,7 +168,8 @@ void Engine::renderFrame()
 void Engine::mainLoop()
 {
 	calculateDeltaTime();
-	if (gameManager.update(getInput(), deltaTime))
+	gameManager.update(getInput(), deltaTime);
+	if (gameManager.renderNextFrame)
 	{
 		preRenderUpdate();
 		renderFrame();
