@@ -22,13 +22,13 @@
     <ProjectGuid>{31DC167B-90AC-406A-A4CF-A3CAD2D9E2F4}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Snake</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -149,14 +149,15 @@
     <ClInclude Include="Dot.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="InputManager.h" />
     <ClInclude Include="Snake.h" />
     <ClInclude Include="Vec2.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Dot.cpp" />
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Snake.cpp" />
+    <ClCompile Include="Vec2.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
